@@ -1,0 +1,89 @@
+A reference for basic sql commands and using them in Java.
+
+To execute a SQL statement:
+  1. Make a blank SQL statement with the following:
+      Statement statement = conn.createStatement();
+      (Just like a normal variable, this does not need to be redeclared after the original declaration.)
+  
+  2. Make a string to hold the sql command.
+      String sql = "use mydb;";
+      
+  3. Execute the statement.
+      statement.executeUpdate(sql);
+      
+  4. After executing a statement if you wish to execute a new statement you must reset the statement.
+      statement = conn.createStatement();
+  
+  5. It is usually a good idea to know whether or not your statement executed properly. Setting an int equal to
+    statement.executeUpdate(sql) is an easy way to do that.
+      int result = statement.executeUpdate(sql);
+	    System.out.println("RES OF SQL INSERT: " + result);
+	    (Result does not need to be preceeded by 'int' if it was declared previously.)
+	    
+	 
+Basic commands:
+  -create database x;
+    Creates a database named x.
+    
+  -drop database x;
+    Deletes the database named x.
+    
+  -drop table x;
+    Deletes the table x within the current database.
+    
+  -use x;
+    Tells the database which schema to use. The schema is what holds all of the relevant tables. If you want to access the
+    tables users, posts, and groups within the database called messenger you would first input the command use messenger; to
+    enable access to the tables.
+    
+  -show tables;
+    Lists the tables in the current database.
+    
+  -describe x;
+    Tells you the name of the fields (columns) within x.
+    
+  -DELETE from x where y = z;
+    Delete all of the rows in x where the data within y is equal to z.
+    
+  -alter table x drop column y;
+    Delete the column named y from table x.
+    
+  -alter table x add column y varchar (20);
+    Add a column called y to table x with variable type varchar (20). The variable type can be replaced with any valid type
+    of variable. If you want to make sure there are no other columns with name y, change add column to add unique.
+    
+  -INSERT INTO x (column1, column2, column3,...) VALUES (value1, value2, value3,...)
+    Inserting data into table x. The first set of values in parens represents the name of the columns that data is being 
+    inserted into. The second set is the values to be inserted. Value1 will be inserted in column1, value2 in column2, etc.
+    If you do not want to insert data into a specific column, leave it's name off of the column list.
+    
+  -CREATE TABLE x (firstname VARCHAR(20), middleinitial VARCHAR(3), lastname VARCHAR(35),suffix VARCHAR(3),officeid VARCHAR(10),userid VARCHAR(15),username VARCHAR(8),email VARCHAR(35),phone VARCHAR(25), groups VARCHAR(15),datestamp DATE,timestamp time,pgpemail VARCHAR(255));
+    Create table x. The values in parentheses are the names of the columns followed by the variable types they hold.
+    
+    
+The SELECT Command
+  All variants of the SELECT command can be combined together.
+
+  -SELECT * FROM x;
+    Select displays data FROM a table x. In this case the * tells select to display all data. * can be replaced by names of
+    specific columns in the format col1, col2
+    
+  -SELECT * FROM x WHERE y = z;
+    Displays any entry FROM x where y (a column/field name) = z (data within that field - an int, char, etc).
+      Examples:
+        SELECT * FROM users WHERE username = "newUser";
+        SELECT * FROM users WHERE username != "newUser";
+        SELECT * FROM users WHERE userID > 1500;
+        SELECT * FROM users WHERE userID > 1500 AND username != "newUser";
+        
+  -SELECT * FROM x order by y;
+    Displays data from x in the order of the values within y. You can choose to sort in ascending or descending order by
+    adding ASC or DESC after y. Ascending is default.
+    
+  -SELECT * FROM x WHERE y like "z%";
+    Displays data from x where the data in y starts with or is equal to z.
+    
+  -SELECT COUNT(*) FROM x;
+    Return the number of rows in x.
+    
+  
