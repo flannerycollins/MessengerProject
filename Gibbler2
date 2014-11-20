@@ -396,6 +396,7 @@ public class Gibbler2 {
                 tempTextAmp = text.substring(i);
                 postAdd = text.substring(i, tempTextAmp.indexOf(' ') + i);
                 System.out.println("Your post belongs to this group: " + postAdd);
+                tempTextAmp = postAdd;
 
             }
 
@@ -404,6 +405,7 @@ public class Gibbler2 {
                 tempTextHashtag = text.substring(i);
                 postAdd = text.substring(i, tempTextHashtag.indexOf(' ') + i);
                 System.out.println("Your post belongs to this tag: " + postAdd);
+                tempTextHashtag = postAdd;
 
             }
 
@@ -412,6 +414,7 @@ public class Gibbler2 {
                 tempTextAt = text.substring(i);
                 postAdd = text.substring(i, tempTextAt.indexOf(' ') + i);
                 System.out.println("Your post will alert this user: " + postAdd);
+                tempTextAt = postAdd;
             }
 
 
