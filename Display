@@ -1,0 +1,25 @@
+
+public class Display {
+    
+    public void Display(){
+        
+    }
+    
+    
+    public void viewFeed(String user){
+        
+        if (!(user == null)){
+            
+            System.out.println("These are your custom posts!");
+            /* Search through users following column and display posts from following and public posts. */
+        }
+        
+        else {
+            
+            System.out.println("These are the public posts!");
+            /* Display only public posts */
+        }
+        
+    }
+    //String user;
+}
