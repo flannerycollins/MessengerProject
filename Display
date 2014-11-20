@@ -1,0 +1,35 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package gibbler2;
+
+/**
+ *
+ * @author Aisha
+ */
+public class Display {
+    
+    public void Display(){
+        
+    }
+    
+    
+    public void viewFeed(String user){
+        
+        if (!(user == null)){
+            
+            System.out.println("These are your custom posts!");
+            /* Search through users following column and display posts from following and public posts. */
+        }
+        
+        else {
+            
+            System.out.println("These are the public posts!");
+            /* Display only public posts */
+        }
+        
+    }
+    //String user;
+}
