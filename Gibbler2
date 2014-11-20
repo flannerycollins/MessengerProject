@@ -89,54 +89,15 @@ public class Gibbler2 {
 
             if (ans.equals("Make a Post")) {
 
-                String text;
-                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                String postDate;
-                String postAdd;
-                
-                System.out.println("Type your post!");
-                text = in.nextLine();
-                text += " ";
-                Date date = new Date();
-                postDate = dateFormat.format(date);
-
-                System.out.println("This is your post: " + text);
-                System.out.println("This is the date it was posted: " + postDate);
-
-                for (int i = 0; i < (text.length() - 1); i++){
-                    String tempText = text;
-                    
-                    if (text.charAt(i) == '~') {
-                        
-                        tempText = text.substring(i);
-                        postAdd = text.substring(i, tempText.indexOf(' ') + i);
-                        System.out.println("Your post belongs to this group: " + postAdd);
-                        
-                    }
-
-                    if (text.charAt(i) == '#') {
-                        
-                        tempText = text.substring(i);
-                        postAdd = text.substring(i, tempText.indexOf(' ') + i);
-                        System.out.println("Your post belongs to this tag: " + postAdd);
-                        
-                    }
-                    
-                    if (text.charAt(i) == '@'){
-                        
-                        tempText = text.substring(i);
-                        postAdd = text.substring(i, tempText.indexOf(' ') + i);
-                        System.out.println("Your post will alert this user: " + postAdd);
-                    }
-                   
-                    
-                }//for loop
+                gibbler.MakeAPost(current);
 
             }//if (ans.equals("Make a Post"))
             
             if (ans.equals("Logout")){
                 
                 System.out.println("Goodbye, Friend");
+                current.setUN("");
+                current.setID(0);
                 
             }//if (ans.equals("Logout"))
             
@@ -401,4 +362,100 @@ public class Gibbler2 {
         
         return currentUser;
     }//login
+    
+    
+    public void MakeAPost(User current){
+        Scanner in = new Scanner(System.in);
+        String sql;
+        int result;
+        String text;
+        String privacy;
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        String postDate;
+        String postAdd;
+        String tempTextAmp = "";
+        String tempTextHashtag = "";
+        String tempTextAt = "";
+        
+        System.out.println("Is your post public or private?");
+        privacy = in.nextLine();
+
+        System.out.println("Type your post!");
+        text = in.nextLine();
+        text += " ";
+        Date date = new Date();
+        postDate = dateFormat.format(date);
+
+        System.out.println("This is your post: " + text);
+        System.out.println("This is the date it was posted: " + postDate);
+
+        for (int i = 0; i < (text.length() - 1); i++){
+
+            if (text.charAt(i) == '&') {
+
+                tempTextAmp = text.substring(i);
+                postAdd = text.substring(i, tempTextAmp.indexOf(' ') + i);
+                System.out.println("Your post belongs to this group: " + postAdd);
+
+            }
+
+            if (text.charAt(i) == '#') {
+
+                tempTextHashtag = text.substring(i);
+                postAdd = text.substring(i, tempTextHashtag.indexOf(' ') + i);
+                System.out.println("Your post belongs to this tag: " + postAdd);
+
+            }
+
+            if (text.charAt(i) == '@'){
+
+                tempTextAt = text.substring(i);
+                postAdd = text.substring(i, tempTextAt.indexOf(' ') + i);
+                System.out.println("Your post will alert this user: " + postAdd);
+            }
+
+
+        }//for loop
+        
+        try{
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "8e7e082e");
+            //System.out.println("Connection successful");
+
+            Statement statement = conn.createStatement();
+            sql = "use mydb;";
+            result = statement.executeUpdate(sql);
+            //System.out.println("Result of SQL update: " + result);
+            
+            statement = conn.createStatement();
+            sql = "SELECT MAX(postid) AS postid FROM posts;";
+            //System.out.println(sql);
+            ResultSet rs = statement.executeQuery(sql);
+            rs.next();
+            int highestID = rs.getInt("postid");
+            //System.out.println(highestID + " is the highest ID");
+            int newID = highestID + 1;
+            //System.out.println(newID + " is the new ID");
+            
+            statement = conn.createStatement();
+            String username = current.getUN();
+            sql = ("INSERT INTO posts (text, privacy, username, date_time, postid)"
+                    + " VALUES ('" + text + "', '" + privacy + "', '" + username + "', '" + postDate + "', " + newID +");");
+            //System.out.println(sql);
+            result = statement.executeUpdate(sql);
+            
+            statement = conn.createStatement();
+            sql = ("UPDATE posts SET groups='" + tempTextAmp + "', hashtags='" + tempTextHashtag + "', "
+                    + "users_tagged='" + tempTextAt + "' WHERE postid=" + newID + ";");
+            //System.out.println(sql);
+            result = statement.executeUpdate(sql);
+
+            conn.close();
+        }catch (SQLException ex) {
+	    // handle any SQL errors
+	    System.out.println("SQLException: " + ex.getMessage());
+	    System.out.println("SQLState: " + ex.getSQLState());
+	    System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        
+    }//make a post
 }
