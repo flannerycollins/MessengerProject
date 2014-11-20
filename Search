@@ -1,0 +1,17 @@
+public class Search {
+    
+    public void Search(){
+        
+    }
+     
+    public void SearchByUser(String username){
+        
+        /* Here is where you will search through the user table and look for that specific user. If the user exists, display their
+            information and 5 most recent posts. */
+    }
+    
+    public void SearchByHash(String tag){
+        
+        /* Here is where you will search through the post table and look for any posts that contain the tag. If they do, display them.*/
+        
+    }
