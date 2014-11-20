@@ -37,6 +37,7 @@ public class Gibbler2 {
         // TODO code application logic here
         
         Gibbler2 gibbler = new Gibbler2();
+        User current = new User();
         //Create group
         Scanner in = new Scanner(System.in);
         
@@ -61,10 +62,9 @@ public class Gibbler2 {
         
         if (ans.equals("Login")){
             
-            gibbler.LogIn();
-            String login = "generic user";
+            current = gibbler.LogIn();
             Display user = new Display();
-            user.viewFeed(login);
+            user.viewFeed(current.getUN());
             
         }
         
@@ -222,6 +222,8 @@ public class Gibbler2 {
             else{
                 System.out.println("That username already exists.");
             }
+            
+            conn.close();
         } catch (SQLException ex) {
 	    // handle any SQL errors
 	    System.out.println("SQLException: " + ex.getMessage());
@@ -314,6 +316,8 @@ public class Gibbler2 {
             else{
                 System.out.println("That username already exists.");
             }
+            
+            conn.close();
         } catch (SQLException ex) {
 	    // handle any SQL errors
 	    System.out.println("SQLException: " + ex.getMessage());
@@ -326,8 +330,8 @@ public class Gibbler2 {
     }//register as admin
     
     
-    public boolean LogIn(){
-        boolean loggedIn = false;
+    public User LogIn(){
+        User currentUser = new User();
         boolean userExists = true;
         Scanner scan = new Scanner(System.in);
         String username;
@@ -359,7 +363,6 @@ public class Gibbler2 {
             
             if(!userExists){
                 System.out.println("That user does not exist.");
-                loggedIn = false;
             } else {
                 System.out.println("Enter your password:");
                 password = scan.nextLine();
@@ -382,16 +385,13 @@ public class Gibbler2 {
                 
                 if(count == 3){
                     System.out.println("You have attempted to enter this password too many times.");
-                    loggedIn = false;
                 }else{
-                    User currentUser = new User();
                     currentUser.setUN(username);
-                    currentUser.setID(userID);  
-                    loggedIn = true;
+                    currentUser.setID(userID);
                     System.out.println("You are now logged in.");
                 }  
             }
-            
+            conn.close();
         }catch (SQLException ex) {
 	    // handle any SQL errors
 	    System.out.println("SQLException: " + ex.getMessage());
@@ -399,7 +399,6 @@ public class Gibbler2 {
 	    System.out.println("VendorError: " + ex.getErrorCode());
         }
         
-        return loggedIn;
+        return currentUser;
     }//login
-    
 }
